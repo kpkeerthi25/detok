@@ -5,11 +5,15 @@ import App from './App';
 import { store } from './app/store';
 import { Provider } from 'react-redux';
 import * as serviceWorker from './serviceWorker';
+import { MoralisProvider } from "react-moralis";
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
-      <App />
+    <MoralisProvider appId={process.env.REACT_APP_MORALIS_APPID} serverUrl={process.env.REACT_APP_MORALIS_SERVER_URL}>
+    <App />
+  </MoralisProvider>
     </Provider>
   </React.StrictMode>,
   document.getElementById('root')
