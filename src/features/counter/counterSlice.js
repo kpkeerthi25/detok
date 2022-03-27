@@ -2,12 +2,15 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { fetchCount } from './counterAPI';
 
 const initialState = {
-  value: {},
+  value: 0,
   address: "",
   isAuthenticated: false,
   accessToken: "",
   refreshToken:"",
   status: 'idle',
+  posts:[],
+  hashtags:{"detokCat":6,"detokDog":4},
+  recommend:[]
 };
 
 // The function below is called a thunk and allows us to perform async logic. It
@@ -34,9 +37,10 @@ export const counterSlice = createSlice({
       // doesn't actually mutate the state because it uses the Immer library,
       // which detects changes to a "draft state" and produces a brand new
       // immutable state based off those changes
-      state.value += 1;
+      state.value = (state.value + 1)%(state.posts.length);
     },
     decrement: (state) => {
+      if(state.value>=1)
       state.value -= 1;
     },
     // Use the PayloadAction type to declare the contents of `action.payload`
@@ -54,6 +58,15 @@ export const counterSlice = createSlice({
     },
     changeRefreshToken: (state, action) => {
       state.refreshToken = action.payload;
+    },
+    changePosts: (state, action) => {
+      state.posts = action.payload;
+    },
+    changeHashtags: (state, action) => {
+      state.hashtags = action.payload;
+    },
+    changeRecom: (state, action) => {
+      state.recommend = [...state.recommend,action.payload];
     }
   },
   // The `extraReducers` field lets the slice handle actions defined elsewhere,
@@ -71,7 +84,7 @@ export const counterSlice = createSlice({
 });
 
 export const { increment, decrement, incrementByAmount, changeAddress,
-  changeAuth, changeAccessToken, changeRefreshToken} = counterSlice.actions;
+  changeAuth, changeAccessToken, changeRefreshToken,changeHashtags,changePosts,changeRecom} = counterSlice.actions;
 
 // The function below is called a selector and allows us to select a value from
 // the state. Selectors can also be defined inline where they're used instead of

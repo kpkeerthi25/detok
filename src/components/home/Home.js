@@ -9,12 +9,16 @@ import { lensAuthenticate } from '../../lensAuthenticate'
 import { generateChallenge } from '../../generate-challenge'
 import { getAddress, signText } from '../../ethers-service';
 import { useSelector,useDispatch } from 'react-redux'
-import {changeAccessToken,changeAuth,changeAddress,changeRefreshToken} from "../../features/counter/counterSlice"
+import {changeAccessToken,changeAuth,changeAddress,changeRefreshToken,changeRecom} from "../../features/counter/counterSlice"
+import { createPost } from '../post/create-post'
+import CreateIpfsLink from '../common/create-ipfs-link'
+import DisplayPosts from '../display-posts/displayPosts'
+import ReactPlayer from 'react-player'
 
 const Home = () => {
 
-const isAuthenticated = useSelector((state)=>state.isAuthenticated);
-const address = useSelector((state)=>state.address);
+const isAuthenticated = useSelector((state)=>state.counter.isAuthenticated);
+const address = useSelector((state)=>state.counter.address);
 const dispatch = useDispatch();
   
   const login = async () => {
@@ -73,14 +77,9 @@ const dispatch = useDispatch();
                   <a className="mx-4 text-info ">Home</a>
                 </Link>
                 <Link to={{ pathname: '/create' }}>
-                  <a className="mx-4 text-info">CreateNFT</a>
+                  <a className="mx-4 text-info">CreatePost</a>
                 </Link>
-                <Link to={{ pathname: '/trades' }}>
-                  <a className="mx-4 text-info">Trade</a>
-                </Link>
-                <Link to={{ pathname: '/search' }}>
-                  <a className="mx-4 text-info">search Trade</a>
-                </Link>
+                
               </div>
             </nav>
             <hr></hr>
@@ -91,9 +90,11 @@ const dispatch = useDispatch();
               element={
                 isAuthenticated ? (
                   // <MyNfts add={user.get('ethAddress')} />
-                  <div>
-                    <h1>not logged in</h1>{' '}
-                  </div>
+                  <DisplayPosts/>
+                //   <div>
+                //     <h1>logged</h1>{' '}
+                //     <button className='btn btn-primary' onClick={()=>createPost()}>post</button>
+                //   </div>
                 ) : (
                   <div>
                     <h1>not logged in</h1>{' '}
@@ -101,11 +102,11 @@ const dispatch = useDispatch();
                 )
               }
             />
-            {/* <Route
+            <Route
                 path="/create"
                 element={
                   isAuthenticated ? (
-                    <CreateNFT />
+                    <CreateIpfsLink />
                   ) : (
                     <div>
                       <h1>not logged in</h1>{' '}
@@ -113,30 +114,7 @@ const dispatch = useDispatch();
                   )
                 }
               />
-              <Route
-                path="/trades"
-                element={
-                  isAuthenticated ? (
-                    <TradeScreen/>
-                  ) : (
-                    <div>
-                      <h1>not logged in</h1>{' '}
-                    </div>
-                  )
-                }
-              />
-              <Route
-                path="/search"
-                element={
-                  isAuthenticated ? (
-                    <SearchTrade add={user.get('ethAddress')}/>
-                  ) : (
-                    <div>
-                      <h1>not logged in</h1>{' '}
-                    </div>
-                  )
-                }
-              /> */}
+              
           </Routes>
         </Router>
       </div>
